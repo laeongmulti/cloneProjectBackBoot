@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    command: gradle bootRun --no-daemon --x test
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
