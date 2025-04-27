@@ -1,24 +1,32 @@
 package com.cloneproject.demo;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MemberController {
   
-  private final ItemRepository itemRepository;
+  private final MemberRepository memberRepository;
 
-  @GetMapping("/list")  //router와 같은 기능
-  String list(Model model) {
-    List<Item> result = itemRepository.findAll();
-    System.out.println(result);
-    model.addAttribute("items",result);
-    return "list.html";
+  @GetMapping("/api/members")
+  public List<Member> getMembers(
+      @RequestParam(required = false) String name,
+      @RequestParam(required = false) String email) {
+    
+    if (name != null && email != null) {
+      return memberRepository.findByNameAndEmail(name, email);
+    } else if (name != null) {
+      return memberRepository.findByName(name);
+    } else if (email != null) {
+      return memberRepository.findByEmail(email);
+    }
+    
+    return memberRepository.findAll();
   }
-
 }

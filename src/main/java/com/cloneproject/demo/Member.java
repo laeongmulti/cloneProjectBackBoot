@@ -25,5 +25,5 @@ public class Member {
   public String name; //이름
   public String email;  //이메일
   public String pwd; //sha256
-  public LocalDateTime join; //회원가입일
+  public LocalDateTime joinDate; //회원가입일
 }
